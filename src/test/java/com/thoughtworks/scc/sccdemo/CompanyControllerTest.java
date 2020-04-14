@@ -43,4 +43,22 @@ public class CompanyControllerTest {
         });
         assertThat(companies.size()).isEqualTo(7);
     }
+
+    @Test
+    public void shouldReturnCompaniesByPage() {
+        ResponseOptions response = given()
+                .params("page", 1)
+                .params("pageSize", 2)
+                .get("/companies");
+
+        assertThat(response.statusCode()).isEqualTo(200);
+
+        List<Company> companies = response.getBody().as(new TypeRef<List<Company>>() {
+            @Override
+            public Type getType() {
+                return super.getType();
+            }
+        });
+        assertThat(companies.size()).isEqualTo(2);
+    }
 }
