@@ -2,6 +2,7 @@ package com.thoughtworks.scc.sccdemo;
 
 import io.restassured.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import io.restassured.response.ResponseOptions;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,4 +62,24 @@ public class CompanyControllerTest {
         });
         assertThat(companies.size()).isEqualTo(2);
     }
+
+    @Test
+    public void shouldAddCompany() {
+        MockMvcRequestSpecification body = given()
+                .header("Content-Type", "application/json;charset=UTF-8")
+                .body(new Company());
+        ResponseOptions response = given().spec(body)
+                .post("/companies");
+
+        assertThat(response.statusCode()).isEqualTo(200);
+
+        List<Company> companies = response.getBody().as(new TypeRef<List<Company>>() {
+            @Override
+            public Type getType() {
+                return super.getType();
+            }
+        });
+        assertThat(companies.size()).isEqualTo(1);
+    }
+
 }
