@@ -65,10 +65,10 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldAddCompany() {
-        MockMvcRequestSpecification body = given()
+        MockMvcRequestSpecification request = given()
                 .header("Content-Type", "application/json;charset=UTF-8")
                 .body(new Company());
-        ResponseOptions response = given().spec(body)
+        ResponseOptions response = given().spec(request)
                 .post("/companies");
 
         assertThat(response.statusCode()).isEqualTo(200);
@@ -82,4 +82,22 @@ public class CompanyControllerTest {
         assertThat(companies.size()).isEqualTo(1);
     }
 
+    @Test
+    public void shouldDeleteCompany() {
+        MockMvcRequestSpecification request = given()
+                .header("Content-Type", "application/json;charset=UTF-8");
+        ResponseOptions response = given().spec(request)
+                .delete("/companies/1");
+
+        assertThat(response.statusCode()).isEqualTo(200);
+
+        List<Company> companies = response.getBody().as(new TypeRef<List<Company>>() {
+            @Override
+            public Type getType() {
+                return super.getType();
+            }
+        });
+        assertThat(companies.size()).isEqualTo(6);
+    }
+    
 }
