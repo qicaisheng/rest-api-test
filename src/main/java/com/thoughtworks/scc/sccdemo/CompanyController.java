@@ -34,7 +34,7 @@ public class CompanyController {
     }
 
     @GetMapping(value = "", params = {"page", "pageSize"})
-    public List<Company> getPageCompanys(@RequestParam int page, @RequestParam int pageSize) {
+    public List<Company> getPageCompanies(@RequestParam int page, @RequestParam int pageSize) {
         return getTestCompany().stream().skip(page * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 
