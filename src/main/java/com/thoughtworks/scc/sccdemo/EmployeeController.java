@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.thoughtworks.scc.sccdemo.Employee.createTestEmployees;
+import static com.thoughtworks.scc.sccdemo.EmployeeFactory.createTestEmployees;
 
 @RestController
 @RequestMapping("employees")
