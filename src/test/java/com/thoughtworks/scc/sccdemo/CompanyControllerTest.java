@@ -32,7 +32,7 @@ public class CompanyControllerTest {
     @Test
     public void shouldReturnAllCompanies() {
         MockMvcResponse response = given()
-                .header("Content-Type", ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .when()
                 .get("/companies");
         
@@ -48,6 +48,7 @@ public class CompanyControllerTest {
     @Test
     public void shouldReturnCompaniesByPage() {
         MockMvcResponse response = given()
+                .contentType(ContentType.JSON)
                 .params("page", 1)
                 .params("pageSize", 2)
                 .when()
@@ -68,7 +69,7 @@ public class CompanyControllerTest {
     public void shouldAddCompany() {
 
         MockMvcResponse response = given()
-                .header("Content-Type", ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .body(new Company())
                 .when()
                 .post("/companies");
@@ -89,7 +90,7 @@ public class CompanyControllerTest {
         Company company = new Company();
         company.setCompanyName("TW");
         MockMvcResponse response = given()
-                .header("Content-Type", ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .body(company)
                 .when()
                 .put("/companies/1");
@@ -103,7 +104,7 @@ public class CompanyControllerTest {
     @Test
     public void shouldDeleteCompany() {
         MockMvcResponse response = given()
-                .header("Content-Type", ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .when()
                 .delete("/companies/1");
 
