@@ -85,6 +85,22 @@ public class CompanyControllerTest {
     }
 
     @Test
+    public void shouldUpdateCompany() {
+        Company company = new Company();
+        company.setCompanyName("TW");
+        MockMvcResponse response = given()
+                .header("Content-Type", ContentType.JSON)
+                .body(company)
+                .when()
+                .put("/companies/1");
+
+        assertThat(response.statusCode()).isEqualTo(200);
+
+        Company updatedCompany = response.getBody().as(Company.class);
+        assertThat(updatedCompany.getCompanyName()).isEqualTo(company.getCompanyName());
+    }
+
+    @Test
     public void shouldDeleteCompany() {
         MockMvcResponse response = given()
                 .header("Content-Type", ContentType.JSON)

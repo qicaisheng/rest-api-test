@@ -56,18 +56,11 @@ public class CompanyController {
         return companies;
     }
 
-    @PutMapping
-    public List<Company> updateCompany(@RequestBody Company company){
-        List<Company> companies=getTestCompany();
-        for(Company currentCompany:companies){
-            if(currentCompany.getId()==company.getId()){
-                companies.remove(currentCompany);
-                companies.add(company);
-                break;
-            }
-        }
-        return companies;
+    @PutMapping("/{id}")
+    public Company updateCompany(@PathVariable int id, @RequestBody Company company){
+        return company;
     }
+    
     @DeleteMapping("/{id}")
     public List<Company> deleteCompany(@PathVariable int id){
         List<Company> companies=getTestCompany();
