@@ -2,7 +2,6 @@ package com.thoughtworks.scc.sccdemo;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,30 +17,25 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public Employee getSpecEmployee(@PathVariable int id) {
-        List<Employee> employees = createTestEmployees();
-        for (Employee employee : employees) {
-            if (employee.getId() == id) {
-                return employee;
-            }
-        }
-        return null;
+        return createTestEmployees().stream()
+                .filter(employee -> employee.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     @GetMapping(value = "", params = {"page", "pageSize"})
     public List<Employee> getPageEmployees(@RequestParam int page, @RequestParam int pageSize) {
-        List<Employee> employees = createTestEmployees();
-        List<Employee> pageList = new ArrayList<>();
-        for (int i = (page - 1) * pageSize; i < page * pageSize; i++) {
-            if (i < employees.size()) {
-                pageList.add(employees.get(i));
-            }
-        }
-        return pageList;
+        return createTestEmployees().stream()
+                .skip(page * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = "", params = {"gender"})
     public List<Employee> getSpeSalarycEmployee(@RequestParam String gender) {
-        return createTestEmployees().stream().filter(it -> it.getGender().equals(gender)).collect(Collectors.toList());
+        return createTestEmployees().stream()
+                .filter(it -> it.getGender().equals(gender))
+                .collect(Collectors.toList());
     }
 
     @PostMapping
@@ -54,25 +48,18 @@ public class EmployeeController {
     @PutMapping
     public List<Employee> updateEmployee(@RequestBody Employee employee) {
         List<Employee> employees = createTestEmployees();
-        for (Employee currentEmployee : employees) {
-            if (currentEmployee.getId() == employee.getId()) {
-                employees.remove(currentEmployee);
-                employees.add(employee);
-                break;
+        return employees.stream().map(originEmployee -> {
+            if (originEmployee.getId() == employee.getId()) {
+                originEmployee = employee;
             }
-        }
-        return employees;
+            return originEmployee;
+        }).collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")
     public List<Employee> deleteEmployee(@PathVariable int id) {
-        List<Employee> employees = createTestEmployees();
-        for (Employee currentEmployee : employees) {
-            if (currentEmployee.getId() == id) {
-                employees.remove(currentEmployee);
-                break;
-            }
-        }
-        return employees;
+        return createTestEmployees().stream()
+                .filter(employee -> employee.getId() != id)
+                .collect(Collectors.toList());
     }
 }
