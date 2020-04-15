@@ -1,9 +1,9 @@
 package com.thoughtworks.scc.sccdemo;
 
+import io.restassured.http.ContentType;
 import io.restassured.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-import io.restassured.response.ResponseOptions;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,11 +31,11 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldReturnAllCompanies() {
-        ResponseOptions response = given()
+        MockMvcResponse response = given()
+                .header("Content-Type", ContentType.JSON)
+                .when()
                 .get("/companies");
-
-        assertThat(response.statusCode()).isEqualTo(200);
-
+        
         List<Company> companies = response.getBody().as(new TypeRef<List<Company>>() {
             @Override
             public Type getType() {
@@ -47,9 +47,10 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldReturnCompaniesByPage() {
-        ResponseOptions response = given()
+        MockMvcResponse response = given()
                 .params("page", 1)
                 .params("pageSize", 2)
+                .when()
                 .get("/companies");
 
         assertThat(response.statusCode()).isEqualTo(200);
@@ -65,10 +66,11 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldAddCompany() {
-        MockMvcRequestSpecification request = given()
-                .header("Content-Type", "application/json;charset=UTF-8")
-                .body(new Company());
-        ResponseOptions response = given().spec(request)
+
+        MockMvcResponse response = given()
+                .header("Content-Type", ContentType.JSON)
+                .body(new Company())
+                .when()
                 .post("/companies");
 
         assertThat(response.statusCode()).isEqualTo(200);
@@ -84,9 +86,9 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldDeleteCompany() {
-        MockMvcRequestSpecification request = given()
-                .header("Content-Type", "application/json;charset=UTF-8");
-        ResponseOptions response = given().spec(request)
+        MockMvcResponse response = given()
+                .header("Content-Type", ContentType.JSON)
+                .when()
                 .delete("/companies/1");
 
         assertThat(response.statusCode()).isEqualTo(200);
