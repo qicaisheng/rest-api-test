@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.thoughtworks.scc.sccdemo.Company.getTestCompany;
 
@@ -17,36 +18,24 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public Company getSpecificCompany(@PathVariable int id) {
-        List<Company> companies = getTestCompany();
-        for (Company company : companies) {
-            if (company.getId() == id) {
-                return company;
-            }
-        }
-        return null;
+        return getTestCompany().stream()
+                .filter(company -> company.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     @GetMapping("/{id}/employees")
     public List<Employee> getSpecCompanyEmployees(@PathVariable int id) {
-        List<Company> companies = getTestCompany();
-        for (Company company : companies) {
-            if (company.getId() == id) {
-                return company.getEmployees();
-            }
-        }
-        return null;
+        return getTestCompany().stream()
+                .filter(company -> company.getId() == id)
+                .findFirst()
+                .map(Company::getEmployees)
+                .orElse(null);
     }
 
     @GetMapping(value = "", params = {"page", "pageSize"})
     public List<Company> getPageCompanys(@RequestParam int page, @RequestParam int pageSize) {
-        List<Company> companies = getTestCompany();
-        List<Company> pageList = new ArrayList<>();
-        for (int i = (page - 1) * pageSize; i < page * pageSize; i++) {
-            if (i < companies.size()) {
-                pageList.add(companies.get(i));
-            }
-        }
-        return pageList;
+        return getTestCompany().stream().skip(page * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 
     @PostMapping
