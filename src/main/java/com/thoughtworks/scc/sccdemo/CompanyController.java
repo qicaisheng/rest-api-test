@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.thoughtworks.scc.sccdemo.Company.getTestCompany;
+import static com.thoughtworks.scc.sccdemo.CompanyFactory.getTestCompany;
 
 @RestController
 @RequestMapping("/companies")
