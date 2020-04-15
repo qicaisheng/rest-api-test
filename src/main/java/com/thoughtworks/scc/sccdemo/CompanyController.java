@@ -52,13 +52,6 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     public List<Company> deleteCompany(@PathVariable int id) {
-        List<Company> companies = getTestCompany();
-        for (Company currentCompany : companies) {
-            if (currentCompany.getId() == id) {
-                companies.remove(currentCompany);
-                break;
-            }
-        }
-        return companies;
+        return getTestCompany().stream().filter(company -> company.getId() != id).collect(Collectors.toList());
     }
 }

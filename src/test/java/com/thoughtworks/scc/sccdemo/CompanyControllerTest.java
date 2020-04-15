@@ -107,7 +107,7 @@ public class CompanyControllerTest {
                 .contentType(ContentType.JSON)
                 .when()
                 .delete("/companies/1");
-
+    
         assertThat(response.statusCode()).isEqualTo(200);
 
         List<Company> companies = response.getBody().as(new TypeRef<List<Company>>() {
@@ -116,7 +116,7 @@ public class CompanyControllerTest {
                 return super.getType();
             }
         });
-        assertThat(companies.size()).isEqualTo(6);
+        assertThat(companies.size()).isEqualTo(0);
     }
     
 }
