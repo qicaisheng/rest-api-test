@@ -46,7 +46,7 @@ public class EmployeeController {
 
     @PostMapping
     public List<Employee> addEmployees(@RequestBody Employee employee) {
-        List<Employee> employees = new ArrayList<>();
+        List<Employee> employees = createTestEmployees();
         employees.add(employee);
         return employees;
     }
