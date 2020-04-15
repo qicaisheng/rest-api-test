@@ -1,7 +1,8 @@
 package com.thoughtworks.scc.sccdemo;
 
+import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.response.ResponseOptions;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,9 @@ public class HelloControllerTest {
     @Test
     public void shouldReturnHelloWorld() throws Exception {
 
-        ResponseOptions response = given()
+        MockMvcResponse response = given()
+                .contentType(ContentType.JSON)
+                .when()
                 .get("/hello");
 
         assertThat(response.statusCode()).isEqualTo(200);
