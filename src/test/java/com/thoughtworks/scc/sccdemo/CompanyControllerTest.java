@@ -67,22 +67,18 @@ public class CompanyControllerTest {
 
     @Test
     public void shouldAddCompany() {
-
+        Company company = new Company();
+        company.setCompanyName("ThoughtWorks");
         MockMvcResponse response = given()
                 .contentType(ContentType.JSON)
-                .body(new Company())
+                .body(company)
                 .when()
                 .post("/companies");
 
         assertThat(response.statusCode()).isEqualTo(200);
 
-        List<Company> companies = response.getBody().as(new TypeRef<List<Company>>() {
-            @Override
-            public Type getType() {
-                return super.getType();
-            }
-        });
-        assertThat(companies.size()).isEqualTo(1);
+        Company companyResponse = response.getBody().as(Company.class);
+        assertThat(companyResponse.getCompanyName()).isEqualTo(company.getCompanyName());
     }
 
     @Test

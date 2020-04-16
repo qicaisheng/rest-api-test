@@ -2,7 +2,6 @@ package com.thoughtworks.scc.sccdemo;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,10 +38,8 @@ public class CompanyController {
     }
 
     @PostMapping
-    public List<Company> addCompany(@RequestBody Company company) {
-        List<Company> companies = new ArrayList<>();
-        companies.add(company);
-        return companies;
+    public Company addCompany(@RequestBody Company company) {
+        return company;
     }
 
     @PutMapping("/{id}")
